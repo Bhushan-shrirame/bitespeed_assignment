@@ -13,7 +13,11 @@
     "experimentalDecorators": true,
     "resolveJsonModule": true,
     "moduleResolution": "node",
-    "sourceMap": true
+    "sourceMap": true,
+    "baseUrl": ".",
+    "paths": {
+      "*": ["src/*"]
+    }
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]

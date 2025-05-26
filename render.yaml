@@ -7,6 +7,8 @@ services:
       cd /opt/render/project/src
       npm install
       npm run build
+      echo "=== Directory Structure ==="
+      ls -la dist/
     startCommand: |
       cd /opt/render/project/src
       node dist/index.js
