@@ -3,7 +3,7 @@ services:
     name: bitespeed-identity-service
     env: node
     buildCommand: npm run build:prod
-    startCommand: npm start
+    startCommand: cd dist && node index.js
     envVars:
       - key: NODE_ENV
         value: production
