@@ -8,6 +8,7 @@
   },
   "scripts": {
     "start": "node dist/src/index.js",
+    "prebuild": "npm install --save-dev @types/node @types/express @types/cors @types/helmet",
     "build": "rm -rf dist && tsc --project tsconfig.json",
     "postinstall": "npm run build",
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
