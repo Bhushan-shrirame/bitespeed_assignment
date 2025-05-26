@@ -11,7 +11,7 @@ services:
       ls -la dist/
     startCommand: |
       cd /opt/render/project/src
-      node dist/index.js
+      node dist/src/index.js
     envVars:
       - key: NODE_ENV
         value: production
