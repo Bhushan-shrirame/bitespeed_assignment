@@ -9,6 +9,7 @@
   "scripts": {
     "start": "node dist/src/index.js",
     "build": "rm -rf dist && tsc --project tsconfig.json && cp -r src/*.json dist/",
+    "postinstall": "npm run build",
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "typeorm": "typeorm-ts-node-commonjs"
   },
