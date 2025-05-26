@@ -2,7 +2,7 @@ services:
   - type: web
     name: bitespeed-identity-service
     env: node
-    nodeVersion: 18.17.0
+    nodeVersion: 20.11.1
     buildCommand: |
       cd /opt/render/project/src
       npm install
