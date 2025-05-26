@@ -1,6 +1,5 @@
 import { AppDataSource } from "../data-source";
 import { Contact } from "../entities/Contact";
-import { In } from "typeorm";
 
 export class ContactService {
     private contactRepository = AppDataSource.getRepository(Contact);

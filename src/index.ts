@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import { AppDataSource } from "./data-source";
@@ -23,7 +23,7 @@ AppDataSource.initialize()
     });
 
 // Routes
-app.post("/identify", async (req, res) => {
+app.post("/identify", async (req: Request, res: Response) => {
     try {
         const { email, phoneNumber } = req.body;
         const contactService = new ContactService();
@@ -31,12 +31,12 @@ app.post("/identify", async (req, res) => {
         res.json(result);
     } catch (error) {
         console.error("Error in /identify endpoint:", error);
-        res.status(400).json({ error: error.message });
+        res.status(400).json({ error: error instanceof Error ? error.message : 'Unknown error' });
     }
 });
 
 // Health check endpoint
-app.get("/health", (req, res) => {
+app.get("/health", (_req: Request, res: Response) => {
     res.json({ status: "ok" });
 });
 
