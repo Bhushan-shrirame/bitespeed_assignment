@@ -5,7 +5,8 @@ services:
     buildCommand: |
       cd /opt/render/project/src
       npm install
-      npm run build
+      npm install -g typescript
+      tsc
     startCommand: |
       cd /opt/render/project/src
       node dist/index.js
