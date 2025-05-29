@@ -26,18 +26,18 @@ getDatabaseConnection()
     });
 
 // Root route
-app.get("/", (_req: Request, res: Response) => {
+app.get("/api", (_req: Request, res: Response) => {
     res.json({
         name: "Bitespeed Identity Reconciliation Service",
         version: "1.0.0",
         endpoints: {
             identify: {
-                path: "/identify",
+                path: "/api/identify",
                 method: "POST",
                 description: "Identify and link customer contacts"
             },
             health: {
-                path: "/health",
+                path: "/api/health",
                 method: "GET",
                 description: "Health check endpoint"
             }
@@ -46,7 +46,7 @@ app.get("/", (_req: Request, res: Response) => {
 });
 
 // Routes
-app.post("/identify", async (req: Request, res: Response) => {
+app.post("/api/identify", async (req: Request, res: Response) => {
     try {
         const { email, phoneNumber } = req.body;
         const contactService = new ContactService();
@@ -59,7 +59,7 @@ app.post("/identify", async (req: Request, res: Response) => {
 });
 
 // Health check endpoint
-app.get("/health", (_req: Request, res: Response) => {
+app.get("/api/health", (_req: Request, res: Response) => {
     res.json({ status: "ok" });
 });
 
