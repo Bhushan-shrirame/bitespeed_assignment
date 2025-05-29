@@ -5,6 +5,9 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
+// Create a connection pool that can be reused
+let dataSource: DataSource | null = null;
+
 export const AppDataSource = new DataSource({
     type: "postgres",
     host: process.env.DB_HOST || "localhost",
@@ -13,8 +16,28 @@ export const AppDataSource = new DataSource({
     password: process.env.DB_PASSWORD || "postgres",
     database: process.env.DB_DATABASE || "bitespeed",
     synchronize: true,
-    logging: true,
+    logging: false, // Disable logging in production
     entities: [Contact],
     migrations: [],
     subscribers: [],
-}); 
+    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+    extra: {
+        max: 20, // Maximum number of connections in the pool
+        connectionTimeoutMillis: 5000, // Connection timeout
+        idleTimeoutMillis: 30000, // Idle connection timeout
+    }
+});
+
+// Function to get or create a database connection
+export async function getDatabaseConnection(): Promise<DataSource> {
+    if (!dataSource) {
+        try {
+            dataSource = await AppDataSource.initialize();
+            console.log("Database connection established");
+        } catch (error) {
+            console.error("Error connecting to database:", error);
+            throw error;
+        }
+    }
+    return dataSource;
+} 

@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
 import helmet from "helmet";
-import { AppDataSource } from "./data-source";
+import { getDatabaseConnection } from "./data-source";
 import { ContactService } from "./services/ContactService";
 
 const app = express();
@@ -13,13 +13,16 @@ app.use(cors());
 app.use(express.json());
 
 // Initialize database connection
-AppDataSource.initialize()
+getDatabaseConnection()
     .then(() => {
         console.log("Database connection established");
     })
     .catch((error) => {
         console.error("Error connecting to database:", error);
-        process.exit(1);
+        // Don't exit in production, let the serverless function handle the error
+        if (process.env.NODE_ENV !== 'production') {
+            process.exit(1);
+        }
     });
 
 // Routes
