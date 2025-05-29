@@ -9,22 +9,18 @@
   "routes": [
     {
       "src": "/api/health",
-      "dest": "src/index.ts",
-      "methods": ["GET"]
+      "dest": "src/index.ts"
     },
     {
       "src": "/api/identify",
-      "dest": "src/index.ts",
-      "methods": ["POST"]
+      "dest": "src/index.ts"
     },
     {
       "src": "/api",
-      "dest": "src/index.ts",
-      "methods": ["GET"]
+      "dest": "src/index.ts"
     },
     {
       "src": "/(.*)",
-      "status": 404,
       "dest": "src/index.ts"
     }
   ]
