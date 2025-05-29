@@ -40,7 +40,11 @@ app.get("/health", (_req: Request, res: Response) => {
     res.json({ status: "ok" });
 });
 
-// Start server
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-}); 
+// Start server only if not in serverless environment
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(port, () => {
+        console.log(`Server is running on port ${port}`);
+    });
+}
+
+export default app; 
