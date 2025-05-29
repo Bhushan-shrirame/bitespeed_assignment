@@ -8,8 +8,7 @@
   },
   "scripts": {
     "start": "node dist/src/index.js",
-    "build": "npm install && rm -rf dist && tsc --project tsconfig.json",
-    "postinstall": "npm run build",
+    "build": "rm -rf dist && tsc --project tsconfig.json",
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "typeorm": "typeorm-ts-node-commonjs"
   },
