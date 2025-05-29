@@ -12,6 +12,12 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
+// Set content type for all responses
+app.use((_req: Request, res: Response, next) => {
+    res.setHeader('Content-Type', 'application/json');
+    next();
+});
+
 // Initialize database connection
 getDatabaseConnection()
     .then(() => {
@@ -61,6 +67,11 @@ app.post("/api/identify", async (req: Request, res: Response) => {
 // Health check endpoint
 app.get("/api/health", (_req: Request, res: Response) => {
     res.json({ status: "ok" });
+});
+
+// 404 handler
+app.use((_req: Request, res: Response) => {
+    res.status(404).json({ error: "Not Found" });
 });
 
 // Start server only if not in serverless environment
