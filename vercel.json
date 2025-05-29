@@ -6,21 +6,18 @@
       "use": "@vercel/node"
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/health",
-      "methods": ["GET"],
-      "dest": "src/index.ts"
+      "source": "/api/health",
+      "destination": "/src/index.ts"
     },
     {
-      "src": "/api/identify",
-      "methods": ["POST"],
-      "dest": "src/index.ts"
+      "source": "/api/identify",
+      "destination": "/src/index.ts"
     },
     {
-      "src": "/api",
-      "methods": ["GET"],
-      "dest": "src/index.ts"
+      "source": "/api",
+      "destination": "/src/index.ts"
     }
   ]
 } 
