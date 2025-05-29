@@ -8,6 +8,11 @@
   ],
   "routes": [
     {
+      "src": "/",
+      "dest": "src/index.ts",
+      "methods": ["GET"]
+    },
+    {
       "src": "/identify",
       "dest": "src/index.ts",
       "methods": ["POST"]

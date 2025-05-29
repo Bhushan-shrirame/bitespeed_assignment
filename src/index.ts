@@ -25,6 +25,26 @@ getDatabaseConnection()
         }
     });
 
+// Root route
+app.get("/", (_req: Request, res: Response) => {
+    res.json({
+        name: "Bitespeed Identity Reconciliation Service",
+        version: "1.0.0",
+        endpoints: {
+            identify: {
+                path: "/identify",
+                method: "POST",
+                description: "Identify and link customer contacts"
+            },
+            health: {
+                path: "/health",
+                method: "GET",
+                description: "Health check endpoint"
+            }
+        }
+    });
+});
+
 // Routes
 app.post("/identify", async (req: Request, res: Response) => {
     try {
