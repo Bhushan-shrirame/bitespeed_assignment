@@ -3,6 +3,8 @@ import cors from "cors";
 import helmet from "helmet";
 import { getDatabaseConnection } from "./data-source";
 import { ContactService } from "./services/ContactService";
+import "reflect-metadata";
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
 const app = express();
 const port = process.env.PORT || 3000;
