@@ -51,6 +51,39 @@ For development:
 npm run dev
 ```
 
+## Deployment on Vercel
+
+1. Install Vercel CLI:
+```bash
+npm i -g vercel
+```
+
+2. Login to Vercel:
+```bash
+vercel login
+```
+
+3. Deploy the application:
+```bash
+vercel
+```
+
+4. Set up environment variables in Vercel dashboard:
+   - Go to your project settings
+   - Navigate to Environment Variables
+   - Add the following variables:
+     ```
+     NODE_ENV=production
+     PORT=3000
+     DB_HOST=<your-db-host>
+     DB_PORT=5432
+     DB_USERNAME=<your-db-username>
+     DB_PASSWORD=<your-db-password>
+     DB_DATABASE=<your-db-name>
+     ```
+
+Note: Make sure your PostgreSQL database is accessible from Vercel's servers. You might need to use a cloud-hosted PostgreSQL service like Neon, Supabase, or Railway.
+
 ## API Endpoints
 
 ### POST /identify
