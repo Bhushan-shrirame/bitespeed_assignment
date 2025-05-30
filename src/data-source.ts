@@ -16,15 +16,15 @@ export const AppDataSource = new DataSource({
     password: process.env.DB_PASSWORD || "postgres",
     database: process.env.DB_DATABASE || "bitespeed",
     synchronize: true,
-    logging: false, // Disable logging in production
+    logging: process.env.NODE_ENV !== 'production',
     entities: [Contact],
     migrations: [],
     subscribers: [],
     ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
     extra: {
-        max: 20, // Maximum number of connections in the pool
-        connectionTimeoutMillis: 5000, // Connection timeout
-        idleTimeoutMillis: 30000, // Idle connection timeout
+        max: 20,
+        connectionTimeoutMillis: 5000,
+        idleTimeoutMillis: 30000,
     }
 });
 
@@ -32,8 +32,12 @@ export const AppDataSource = new DataSource({
 export async function getDatabaseConnection(): Promise<DataSource> {
     if (!dataSource) {
         try {
-            dataSource = await AppDataSource.initialize();
-            console.log("Database connection established");
+            if (!AppDataSource.isInitialized) {
+                dataSource = await AppDataSource.initialize();
+                console.log("Database connection established");
+            } else {
+                dataSource = AppDataSource;
+            }
         } catch (error) {
             console.error("Error connecting to database:", error);
             throw error;
