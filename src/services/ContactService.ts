@@ -1,5 +1,6 @@
 import { AppDataSource } from "../data-source";
 import { Contact } from "../entities/Contact";
+import { In } from "typeorm";
 
 export class ContactService {
     private contactRepository = AppDataSource.getRepository(Contact);
@@ -29,13 +30,25 @@ export class ContactService {
             return this.formatResponse(newContact, []);
         }
 
-        // Get the primary contact (oldest one)
-        const primaryContact = existingContacts.find(c => c.linkPrecedence === "primary") || existingContacts[0];
-        const secondaryContacts = existingContacts.filter(c => c.id !== primaryContact.id);
+        // Get all linked contacts (including those linked through secondary contacts)
+        const linkedContactIds = new Set<number>();
+        existingContacts.forEach(contact => {
+            linkedContactIds.add(contact.id);
+            if (contact.linkedId) linkedContactIds.add(contact.linkedId);
+        });
+
+        const allLinkedContacts = await this.contactRepository.find({
+            where: { id: In(Array.from(linkedContactIds)) },
+            order: { createdAt: "ASC" }
+        });
+
+        // Find the primary contact (oldest one)
+        const primaryContact = allLinkedContacts.find(c => c.linkPrecedence === "primary") || allLinkedContacts[0];
+        const secondaryContacts = allLinkedContacts.filter(c => c.id !== primaryContact.id);
 
         // Check if we need to create a new secondary contact
-        const hasNewInfo = (email && !existingContacts.some(c => c.email === email)) ||
-                          (phoneNumber && !existingContacts.some(c => c.phoneNumber === phoneNumber));
+        const hasNewInfo = (email && !allLinkedContacts.some(c => c.email === email)) ||
+                          (phoneNumber && !allLinkedContacts.some(c => c.phoneNumber === phoneNumber));
 
         if (hasNewInfo) {
             const newSecondaryContact = await this.contactRepository.save({
@@ -48,7 +61,7 @@ export class ContactService {
         }
 
         // Update any primary contacts to secondary if they're not the oldest
-        for (const contact of existingContacts) {
+        for (const contact of allLinkedContacts) {
             if (contact.id !== primaryContact.id && contact.linkPrecedence === "primary") {
                 await this.contactRepository.update(contact.id, {
                     linkPrecedence: "secondary",
