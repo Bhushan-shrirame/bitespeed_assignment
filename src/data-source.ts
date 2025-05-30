@@ -17,7 +17,9 @@ export const AppDataSource = new DataSource({
     database: process.env.DB_DATABASE || "bitespeed",
     synchronize: true,
     logging: process.env.NODE_ENV !== 'production',
-    entities: [Contact],
+    entities: process.env.NODE_ENV === 'production'
+        ? [__dirname + '/entities/*.js']
+        : [Contact],
     migrations: [],
     subscribers: [],
     ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
